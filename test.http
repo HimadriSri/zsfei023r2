@@ -1,0 +1,12 @@
+### Get request
+GET http://localhost:4004/odata/v4/catalog/ZT00_FI_IZANAI
+
+### Post request
+POST http://localhost:4004/odata/v4/catalog/ZT00_FI_IZANAI
+Content-Type: application/json 
+
+{
+   "BUKRS": "JP2",
+   "ZZ_FI_PO_NO": "1101",
+   "ZZ_FI_PO_ITEM_NO": 20
+}

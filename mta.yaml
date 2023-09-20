@@ -1,0 +1,40 @@
+_schema-version: '3.1'
+ID: ZFI_P_SFIE0001_IZANAI_GL_ACCOUNT
+version: 1.0.0
+description: "A simple CAP project."
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npx cds build --production
+modules:
+  - name: ZFI_P_SFIE0001_IZANAI_GL_ACCOUNT-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: ZFI_P_SFIE0001_IZANAI_GL_ACCOUNT-db
+
+  - name: ZFI_P_SFIE0001_IZANAI_GL_ACCOUNT-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: ZFI_P_SFIE0001_IZANAI_GL_ACCOUNT-db
+
+resources:
+  - name: ZFI_P_SFIE0001_IZANAI_GL_ACCOUNT-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
